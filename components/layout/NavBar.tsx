@@ -4,6 +4,7 @@ import Container from "./Container";
 import ThemeToggle from "./ThemeToggle";
 import SearchInput from "./SearchInput";
 import Notifications from "./Notifications";
+import UserButton from "./UserButton";
 
 export default function NavBar() {
   return (
@@ -18,7 +19,7 @@ export default function NavBar() {
           <div className="flex gap-5 sm:gap-8 items-center">
             <ThemeToggle />
             <Notifications />
-            <div>UserMenu</div>
+            <UserButton />
           </div>
         </div>
       </Container>
