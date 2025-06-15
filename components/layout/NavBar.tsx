@@ -3,6 +3,7 @@ import { NotepadText } from "lucide-react";
 import Container from "./Container";
 import ThemeToggle from "./ThemeToggle";
 import SearchInput from "./SearchInput";
+import Notifications from "./Notifications";
 
 export default function NavBar() {
   return (
@@ -16,7 +17,7 @@ export default function NavBar() {
           <SearchInput />
           <div className="flex gap-5 sm:gap-8 items-center">
             <ThemeToggle />
-            <div>Notification</div>
+            <Notifications />
             <div>UserMenu</div>
           </div>
         </div>
