@@ -1,3 +1,10 @@
+import LoginForm from "@/components/auth/LoginForm";
+import Container from "@/components/layout/Container";
+
 export default function Login() {
-  return <div>Login</div>;
+  return (
+    <Container>
+      <LoginForm />
+    </Container>
+  );
 }
