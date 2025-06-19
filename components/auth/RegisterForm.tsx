@@ -7,7 +7,8 @@ import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
 import { RegisterSchema, RegisterSchemaType } from "@/schemas/RegisterSchema";
 import { signUp } from "@/actions/auth/register";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import Alert from "../common/Alert";
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition();
@@ -19,6 +20,16 @@ export default function RegisterForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) });
+
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError("");
+        setSuccess("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
   const onSubmit: SubmitHandler<RegisterSchemaType> = (data) => {
     setSuccess("");
@@ -68,8 +79,8 @@ export default function RegisterForm() {
         errors={errors}
         disabled={isPending}
       />
-      {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">{success}</p>}
+      {error && <Alert message={error} error />}
+      {success && <Alert message={success} success />}
       <Button
         type="submit"
         label={isPending ? "Submitting..." : "Register"}
