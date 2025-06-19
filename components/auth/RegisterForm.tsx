@@ -6,16 +6,30 @@ import Button from "../common/Button";
 import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
 import { RegisterSchema, RegisterSchemaType } from "@/schemas/RegisterSchema";
+import { signUp } from "@/actions/auth/register";
+import { useState, useTransition } from "react";
 
 export default function RegisterForm() {
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterSchemaType>({ resolver: zodResolver(RegisterSchema) });
 
-  const onSubmit: SubmitHandler<RegisterSchemaType> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<RegisterSchemaType> = (data) => {
+    setSuccess("");
+    setError("");
+    startTransition(() => {
+      signUp(data).then((res) => {
+        setError(res.error);
+        setSuccess(res.success);
+      });
+    });
+  };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -28,6 +42,7 @@ export default function RegisterForm() {
         type="text"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
       <FormField
         id="email"
@@ -35,6 +50,7 @@ export default function RegisterForm() {
         type="email"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
       <FormField
         id="password"
@@ -42,6 +58,7 @@ export default function RegisterForm() {
         type="password"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
       <FormField
         id="confirmPassword"
@@ -49,8 +66,16 @@ export default function RegisterForm() {
         type="password"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
-      <Button type="submit" label="Register" />
+      {error && <p className="text-red-500">{error}</p>}
+      {success && <p className="text-green-500">{success}</p>}
+      <Button
+        type="submit"
+        label={isPending ? "Submitting..." : "Register"}
+        disabled={isPending}
+        className="cursor-pointer"
+      />
       <div className="flex justify-center my-2">Or</div>
       <SocialAuth />
     </form>
