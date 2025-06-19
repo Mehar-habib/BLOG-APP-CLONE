@@ -6,15 +6,30 @@ import FormField from "../common/FormField";
 import Button from "../common/Button";
 import Heading from "../common/Heading";
 import SocialAuth from "./SocialAuth";
+import { useState, useTransition } from "react";
+import { login } from "@/actions/auth/login";
+import Alert from "../common/Alert";
 
 export default function LoginForm() {
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginSchemaType>({ resolver: zodResolver(LoginSchema) });
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
+    setError("");
+    startTransition(() => {
+      login(data).then((res) => {
+        if (res?.error) {
+          setError(res.error);
+        }
+      });
+    });
+  };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -27,6 +42,7 @@ export default function LoginForm() {
         type="email"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
       <FormField
         id="password"
@@ -34,8 +50,14 @@ export default function LoginForm() {
         type="password"
         register={register}
         errors={errors}
+        disabled={isPending}
       />
-      <Button type="submit" label="Login" />
+      {error && <Alert error message={error} />}
+      <Button
+        type="submit"
+        label={isPending ? "submitting..." : "Login"}
+        disabled={isPending}
+      />
       <div className="flex justify-center my-2">Or</div>
       <SocialAuth />
     </form>

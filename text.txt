@@ -1,0 +1,16 @@
+Step-by-Step Flow Explanation:
+User Submission
+[Login Form] → Submits credentials → [Server Action]
+
+Initial Validation
+[Server Action] → Validates with Zod → Checks if user exists
+
+Auth.js Handoff
+[Server Action] → Calls signIn("credentials") → [Auth.js Config]
+
+Core Authentication
+[Auth.js Config] → Re-validates → Compares passwords with bcrypt
+
+Result Propagation
+Success: Creates session → Redirects
+Failure: [Auth.js Config] → Returns error → [Server Action] → [Error Handling]
