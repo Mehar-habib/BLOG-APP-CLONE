@@ -1,0 +1,56 @@
+// ==============================
+// Database configuration
+// ==============================
+datasource db {
+    provider = "postgresql" // We're using a PostgreSQL database
+    url      = env("DATABASE_URL") // The connection URL is stored in an environment variable
+}
+
+// ==============================
+// Prisma Client Generator
+// ==============================
+generator client {
+    provider = "prisma-client-js" // Generates Prisma Client for JavaScript/TypeScript
+}
+
+// ==============================
+// User Model
+// ==============================
+model User {
+    id            String    @id @default(cuid()) // Unique user ID (generated with cuid)
+    name          String? // Optional user name
+    email         String    @unique // Required and unique email
+    password      String? // Optional password (if using credentials auth)
+    emailVerified DateTime? // Timestamp for email verification
+    image         String? // Optional profile image URL
+    accounts      Account[] // One-to-many relation: one user, multiple accounts
+
+    createdAt DateTime @default(now()) // Creation timestamp
+    updatedAt DateTime @updatedAt // Auto-updated on each change
+}
+
+// ==============================
+// Account Model (OAuth)
+// ==============================
+model Account {
+    userId            String // Foreign key to the User model
+    type              String // Type of account (e.g., "oauth")
+    provider          String // Provider name (e.g., "google", "github")
+    providerAccountId String // Unique account ID from the provider
+    refresh_token     String? // Optional refresh token
+    access_token      String? // Optional access token
+    expires_at        Int? // Optional expiration timestamp (Unix time)
+    token_type        String? // Optional token type (e.g., "Bearer")
+    scope             String? // Optional scopes granted
+    id_token          String? // Optional ID token (OpenID Connect)
+    session_state     String? // Optional session state
+
+    createdAt DateTime @default(now()) // Creation timestamp
+    updatedAt DateTime @updatedAt // Auto-updated on each change
+
+    // Define relationship to User
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // Composite primary key (used for provider + account uniqueness)
+    @@id([provider, providerAccountId])
+}
