@@ -8,10 +8,20 @@ import bcrypt from "bcryptjs";
 import { LoginSchema } from "./schemas/LoginSchema";
 // Custom helper to fetch user from the database by email
 import { getUserByEmail } from "./lib/user";
+import Github from "next-auth/providers/github";
+import google from "next-auth/providers/google";
 
 // This is the NextAuth configuration object, used in `NextAuth()` initialization
 export default {
   providers: [
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     // Using the custom credentials provider for email/password login
     Credentials({
       async authorize(credentials) {
