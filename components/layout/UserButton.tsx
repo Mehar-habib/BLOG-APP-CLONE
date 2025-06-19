@@ -1,3 +1,4 @@
+"use client";
 import {
   Bookmark,
   LogOut,
@@ -14,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 export default function UserButton() {
   return (
@@ -56,7 +58,7 @@ export default function UserButton() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <button className="flex items-center gap-2">
+          <button className="flex items-center gap-2" onClick={() => signOut()}>
             <LogOut size={18} /> Sign Out
           </button>
         </DropdownMenuItem>

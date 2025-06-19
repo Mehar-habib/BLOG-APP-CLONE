@@ -9,10 +9,13 @@ import SocialAuth from "./SocialAuth";
 import { useState, useTransition } from "react";
 import { login } from "@/actions/auth/login";
 import Alert from "../common/Alert";
+import { useRouter } from "next/navigation";
+import { LOGIN_REDIRECT } from "@/routes";
 
 export default function LoginForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const {
     register,
@@ -26,6 +29,9 @@ export default function LoginForm() {
       login(data).then((res) => {
         if (res?.error) {
           setError(res.error);
+        }
+        if (!res?.error) {
+          router.push(LOGIN_REDIRECT);
         }
       });
     });
