@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/layout/NavBar";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,17 +21,19 @@ export const metadata: Metadata = {
   icons: { icon: "./logo.svg" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
-    <html lang="en" className="" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <SessionProvider session={session}>
+      <html lang="en" className="" suppressHydrationWarning>
+        <head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
           (function () {
             try {
               const theme = localStorage.getItem("theme");
@@ -41,16 +45,17 @@ export default function RootLayout({
             } catch (_) {}
           })();
         `,
-          }}
-        />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen px-2 bg-light-mode dark:bg-dark-mode text-dark-mode dark:text-light-mode`}
-      >
-        <NavBar />
-        <main className="flex-grow">{children}</main>
-        <footer>Footer</footer>
-      </body>
-    </html>
+            }}
+          />
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen px-2 bg-light-mode dark:bg-dark-mode text-dark-mode dark:text-light-mode`}
+        >
+          <NavBar />
+          <main className="flex-grow">{children}</main>
+          <footer>Footer</footer>
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
