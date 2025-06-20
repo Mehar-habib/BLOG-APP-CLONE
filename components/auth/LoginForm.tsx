@@ -9,13 +9,19 @@ import SocialAuth from "./SocialAuth";
 import { useState, useTransition } from "react";
 import { login } from "@/actions/auth/login";
 import Alert from "../common/Alert";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LOGIN_REDIRECT } from "@/routes";
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email in use with a different provider"
+      : "";
 
   const {
     register,
@@ -28,6 +34,7 @@ export default function LoginForm() {
     startTransition(() => {
       login(data).then((res) => {
         if (res?.error) {
+          router.replace("/login");
           setError(res.error);
         }
         if (!res?.error) {
@@ -65,6 +72,7 @@ export default function LoginForm() {
         disabled={isPending}
       />
       <div className="flex justify-center my-2">Or</div>
+      {urlError && <Alert error message={urlError} />}
       <SocialAuth />
     </form>
   );
