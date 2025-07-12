@@ -29,7 +29,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html lang="en" className="" suppressHydrationWarning>
+      <html lang="en" className="" suppressHydrationWarning={true}>
         <head>
           <script
             dangerouslySetInnerHTML={{
@@ -49,6 +49,7 @@ export default async function RootLayout({
           />
         </head>
         <body
+          suppressHydrationWarning={true}
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen px-2 bg-light-mode dark:bg-dark-mode text-dark-mode dark:text-light-mode`}
         >
           <NavBar />

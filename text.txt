@@ -14,3 +14,19 @@ Core Authentication
 Result Propagation
 Success: Creates session → Redirects
 Failure: [Auth.js Config] → Returns error → [Server Action] → [Error Handling]
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+📦 Code ka Flow aur Use Kaha Hota Hai?
+1. getVerificationTokenByEmail(email)
+Ye function check karta hai ke is email ke liye koi token already database mein saved to nahi.
+
+Iska use is liye hota hai ke ek email ke liye multiple tokens na ho jayein.
+
+2. generateEmailVerificationToken(email)
+Ye function naya random token banata hai (uuidv4() se).
+
+Token ki expiry bhi set karta hai (usually 1 hour).
+
+Agar pehle se token hai to delete karta hai.
+
+Fir naya token DB mein save karta hai aur return karta hai.
