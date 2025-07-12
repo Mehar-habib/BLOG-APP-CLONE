@@ -2,6 +2,10 @@
 
 // Import required functions and types
 import { signIn } from "@/auth"; // Auth.js (NextAuth) signIn method
+import {
+  generateEmailVerificationToken,
+  sendEmailVerificationToken,
+} from "@/lib/emailVerification";
 import { getUserByEmail } from "@/lib/user"; // DB query to get user by email
 import { LOGIN_REDIRECT } from "@/routes"; // Path to redirect after successful login
 import { LoginSchema, LoginSchemaType } from "@/schemas/LoginSchema"; // Zod schema and types for login form validation
@@ -28,6 +32,28 @@ export const login = async (values: LoginSchemaType) => {
     return { error: "Invalid credentials" };
   }
 
+  if (!user.emailVerified) {
+    const emailVerificationToken = await generateEmailVerificationToken(
+      user.email
+    );
+    const { error } = await sendEmailVerificationToken(
+      emailVerificationToken.email,
+      emailVerificationToken.token
+    );
+
+    // If an error occurred while sending the email, return an error message
+    if (error) {
+      return {
+        error:
+          "Something went wrong while sending the verification email! Please try again",
+      };
+    }
+
+    // If everything went fine, return a success message
+    return { success: "Verification email sent!" };
+
+    // Agar user ka email abhi tak verify nahi hua, toh dobara se verification email send ki jati hai.
+  }
   try {
     // Attempt to sign in with credentials, and redirect on success
     await signIn("credentials", {

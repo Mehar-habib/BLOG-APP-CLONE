@@ -30,3 +30,28 @@ Token ki expiry bhi set karta hai (usually 1 hour).
 Agar pehle se token hai to delete karta hai.
 
 Fir naya token DB mein save karta hai aur return karta hai.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Yeh code email verification system ka part hai, aur iska purpose yeh ensure karna hai ke:
+User ne jo email diya hai, woh valid hai.
+User woh email ka actual malik hai.
+Account verification ke bina login ya other features use na kare.
+
+✅ Use Case (Kahan use hota hai?)
+Jab user sign up karta hai → usko ek email jata hai with token.
+User us email ka link open karta hai → token verify hota hai.
+Agar token valid ho aur expired na ho → user ka emailVerified status update hota hai in database.
+
+✅ Why? (Yeh kyun zaroori hai?)
+Security: Fake emails se bachne ke liye.
+Spam prevention: Duplicate ya bot accounts ko roknay ke liye.
+Trust & features: Kuch features sirf verified users ke liye enable hote hain.
+
+✅ Roman Urdu Explanation:
+Jab user sign up karta hai, usay ek token wala email bheja jata hai.
+Jab user us link ko open karta hai, yeh code us token ko check karta hai:
+Agar token nahi mila → error deta hai.
+Agar token expire ho gaya → error deta hai.
+Agar user database mein exist nahi karta → error deta hai.
+Agar sab theek hai → user ke account mein emailVerified ko true set kar deta hai.
+Is tarah system ko pata chal jata hai ke email sach mein user ka hai.

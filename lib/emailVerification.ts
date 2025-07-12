@@ -46,7 +46,7 @@ export const sendEmailVerificationToken = async (
   token: string
 ) => {
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const emailVerificationLink = `${process.env.BASE_URL}/email-verification=${token}`;
+  const emailVerificationLink = `${process.env.BASE_URL}/email-verification?token=${token}`;
 
   const res = await resend.emails.send({
     from: "onboarding@resend.dev",

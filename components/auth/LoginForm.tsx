@@ -15,7 +15,8 @@ import { LOGIN_REDIRECT } from "@/routes";
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
 
   const urlError =
@@ -39,6 +40,9 @@ export default function LoginForm() {
         }
         if (!res?.error) {
           router.push(LOGIN_REDIRECT);
+        }
+        if (res?.success) {
+          setSuccess(res.success);
         }
       });
     });
@@ -66,6 +70,7 @@ export default function LoginForm() {
         disabled={isPending}
       />
       {error && <Alert error message={error} />}
+      {success && <Alert success message={success} />}
       <Button
         type="submit"
         label={isPending ? "submitting..." : "Login"}
