@@ -1,5 +1,10 @@
 // Routes that don't require authentication
-export const publicRoutes = ["/", "/email-verification"];
+export const publicRoutes = [
+  "/",
+  "/email-verification",
+  "/password-email-form",
+  "/password-reset-form",
+];
 
 // Routes used for authentication (login/register)
 export const authRoutes = ["/login", "/register"];

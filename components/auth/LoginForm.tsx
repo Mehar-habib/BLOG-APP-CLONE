@@ -11,6 +11,7 @@ import { login } from "@/actions/auth/login";
 import Alert from "../common/Alert";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LOGIN_REDIRECT } from "@/routes";
+import Link from "next/link";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -79,6 +80,15 @@ export default function LoginForm() {
       <div className="flex justify-center my-2">Or</div>
       {urlError && <Alert error message={urlError} />}
       <SocialAuth />
+
+      <div className="flex items-end justify-end">
+        <Link
+          href="/password-email-form"
+          className="mt-1 hover:underline hover:text-blue-500 font-semibold tracking-wide"
+        >
+          Forgot Password?
+        </Link>
+      </div>
     </form>
   );
 }

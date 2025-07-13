@@ -55,3 +55,12 @@ Agar token expire ho gaya → error deta hai.
 Agar user database mein exist nahi karta → error deta hai.
 Agar sab theek hai → user ke account mein emailVerified ko true set kar deta hai.
 Is tarah system ko pata chal jata hai ke email sach mein user ka hai.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+phaly email reset, phir passwrod reset
+User email daalta hai "Forgot Password" form mein.
+Email validate hoti hai.
+System user ko database se find karta hai.
+Agar user mil jaye, to reset token generate hota hai.
+Us token ke sath email send hoti hai.
+User email se link par click karta hai aur naya password set karta hai (next step mein).
