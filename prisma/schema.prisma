@@ -24,9 +24,9 @@ model User {
     emailVerified DateTime? // Timestamp for email verification
     image         String? // Optional profile image URL
     accounts      Account[] // One-to-many relation: one user, multiple accounts
-
-    createdAt DateTime @default(now()) // Creation timestamp
-    updatedAt DateTime @updatedAt // Auto-updated on each change
+    role          UserRole  @default(USER)
+    createdAt     DateTime  @default(now()) // Creation timestamp
+    updatedAt     DateTime  @updatedAt // Auto-updated on each change
 }
 
 // ==============================
@@ -71,4 +71,9 @@ model PasswordResetToken {
     expires DateTime
 
     @@unique([email, token])
+}
+
+enum UserRole {
+    ADMIN
+    USER
 }
