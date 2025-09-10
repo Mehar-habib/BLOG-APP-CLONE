@@ -1,0 +1,11 @@
+DATABASE_URL=postgresql://neondb_owner:npg_RskE9AOQZ7fP@ep-gentle-lab-admj2fqi-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+AUTH_SECRET=sdfsdfwer32423f3w4534
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+RESEND_API_KEY=
+BASE_URL=
