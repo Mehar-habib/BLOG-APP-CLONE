@@ -15,19 +15,48 @@ export default function AddCover({
   const imgInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  console.log(isUploading);
   const { edgestore } = useEdgeStore();
 
   const handleButtonClick = () => imgInputRef.current?.click();
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const uploadImage = async () => {
+  //     if (!file) return setIsUploading(true);
+  //     try {
+  //       const res = await edgestore.publicFiles.upload({
+  //         file,
+  //         options: replaceUrl ? { replaceTargetUrl: replaceUrl } : undefined,
+  //       });
+  //       if (isMounted && res.url) {
+  //         setUploadedCover(res.url);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       if (isMounted) {
+  //         setIsUploading(false);
+  //       }
+  //     }
+  //   };
+  //   uploadImage();
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [file]);
+
   useEffect(() => {
+    if (!file) return;
+
     let isMounted = true;
+
     const uploadImage = async () => {
-      if (!file) return setIsUploading(true);
+      setIsUploading(true);
       try {
         const res = await edgestore.publicFiles.upload({
           file,
           options: replaceUrl ? { replaceTargetUrl: replaceUrl } : undefined,
         });
+
         if (isMounted && res.url) {
           setUploadedCover(res.url);
         }
@@ -39,17 +68,23 @@ export default function AddCover({
         }
       }
     };
+
     uploadImage();
+
     return () => {
       isMounted = false;
     };
-  }, [file, edgestore, replaceUrl, setUploadedCover]);
+  }, [file, replaceUrl, edgestore]);
+
   return (
     <div>
       <input
         type="file"
         accept="image/*"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
+        onChange={(e) => {
+          setFile(e.target.files?.[0] || null);
+          e.currentTarget.value = "";
+        }}
         ref={imgInputRef}
         className="hidden"
       />
