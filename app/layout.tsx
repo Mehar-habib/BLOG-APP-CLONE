@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/layout/NavBar";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +29,13 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <SessionProvider session={session}>
-      <html lang="en" className="" suppressHydrationWarning={true}>
-        <head>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+    <EdgeStoreProvider>
+      <SessionProvider session={session}>
+        <html lang="en" className="" suppressHydrationWarning={true}>
+          <head>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
           (function () {
             try {
               const theme = localStorage.getItem("theme");
@@ -45,18 +47,19 @@ export default async function RootLayout({
             } catch (_) {}
           })();
         `,
-            }}
-          />
-        </head>
-        <body
-          suppressHydrationWarning={true}
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen px-2 bg-light-mode dark:bg-dark-mode text-dark-mode dark:text-light-mode`}
-        >
-          <NavBar />
-          <main className="flex-grow">{children}</main>
-          <footer>Footer</footer>
-        </body>
-      </html>
-    </SessionProvider>
+              }}
+            />
+          </head>
+          <body
+            suppressHydrationWarning={true}
+            className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen px-2 bg-light-mode dark:bg-dark-mode text-dark-mode dark:text-light-mode`}
+          >
+            <NavBar />
+            <main className="flex-grow">{children}</main>
+            <footer>Footer</footer>
+          </body>
+        </html>
+      </SessionProvider>
+    </EdgeStoreProvider>
   );
 }
