@@ -4,11 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import FormField from "../common/FormField";
+import AddCover from "./AddCover";
+import { useState } from "react";
 
 export default function CreateBlogForm() {
   const session = useSession();
   const userId = session.data?.user.userId;
-
+  const [uploadedCover, setUploadedCover] = useState<string>();
+  console.log(uploadedCover);
   const {
     register,
     handleSubmit,
@@ -24,6 +27,7 @@ export default function CreateBlogForm() {
   return (
     <form className="flex flex-col justify-between max-w-[1200px] m-auto min-h-[85vh]">
       <div>
+        <AddCover setUploadedCover={setUploadedCover} />
         <FormField
           id="title"
           type="text"
