@@ -1,0 +1,15 @@
+export const tags = [
+  "All",
+  "HTML",
+  "CSS",
+  "Javascript",
+  "React",
+  "Next.js",
+  "Tailwind",
+  "Node.js",
+  "Git",
+  "GitHub",
+  "Python",
+  "Flask",
+  "Django",
+];
